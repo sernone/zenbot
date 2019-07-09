@@ -43,7 +43,21 @@ try {
     });
 }
 catch (e) {
-    console.error(e.message);
+    console.error(e);
+}
+
+try {
+  client.on("presenceUpdate", (oldMember, newMember) => {
+    if (newMember.roles.find(r => r.name === 'Streamer Dreamers')) {
+        if ((newMember.presence.game !== null && newMember.presence.game.streaming === true) && oldMember.presence.game === null) {
+          const streamChannel = newMember.guild.channels.find(c => c.name === "streams");
+          streamChannel.send("Check out our Zen Streamer " + newMember.displayName + " at " + newMember.presence.game.url);
+        }
+    }
+  })
+}
+catch (e) {
+  console.error(e)
 }
 
 try {
