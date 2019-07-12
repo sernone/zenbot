@@ -25,6 +25,18 @@ catch (e) {
 }
 
 try {
+  client.on("guildMemberAdd", member => {
+    const friendRole = member.guild.roles.find(r => r.name === "Friends");
+    if (!member.roles.get(friendRole.id)) {
+      member.addRole(friendRole.id, "Added friend role to " + member.displayName);
+    }
+  })
+}
+catch (e) {
+  console.log(e)
+}
+
+try {
     client.on("message", message => {
         var msgChat = message.content;
         if (msgChat.substring(0, 1) == "!") {
