@@ -60,7 +60,7 @@ catch (e) {
 
 try {
   client.on("presenceUpdate", (oldMember, newMember) => {
-    if (newMember.roles.find(r => r.name === 'Streamer Dreamers')) {
+    if (newMember.roles.find(r => r.name === 'Stream Team')) {
         if ((newMember.presence.game !== null && newMember.presence.game.streaming === true) && oldMember.presence.game === null) {
           const streamChannel = newMember.guild.channels.find(c => c.name === "streams");
           streamChannel.send("Check out our Zen Streamer " + newMember.displayName + " at " + newMember.presence.game.url);
