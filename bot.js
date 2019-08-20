@@ -60,11 +60,19 @@ catch (e) {
 
 try {
   client.on("presenceUpdate", (oldMember, newMember) => {
-    if (newMember.roles.find(r => r.name === 'Stream Team')) {
-        if ((newMember.presence.game !== null && newMember.presence.game.streaming === true) && (oldMember.presence.game == null || oldMember.presence.game.streaming == false)) {
+    if (newMember.roles.find(r => r.name === 'Stream Team') && newMember.presence.game !== null) {
+      var isStreaming = JSON.parse(fs.readFileSync("./streaming.json", "utf8"));
+      if (newMember.presence.game.streaming === true) {
+        if (!isStreaming[newMember.id]) {
           const streamChannel = newMember.guild.channels.find(c => c.name === "streams");
           streamChannel.send("Check out our Zen Streamer " + newMember.displayName + " at " + newMember.presence.game.url);
+          isStreaming[newMember.id] = true;
+          fs.writeFileSync("./streamers.json", JSON.stringify(isStreaming));
         }
+      } else {
+          delete isStreaming[newMember.id]
+          fs.writeFileSync("./streamers.json", JSON.stringify(isStreaming))
+      }
     }
   })
 }
